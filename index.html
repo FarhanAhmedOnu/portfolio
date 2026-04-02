@@ -11,7 +11,8 @@
         :root {
             --terminal-green: #33ff00;
             --terminal-dark: #050505;
-            --glow: 0 0 10px rgba(51, 255, 0, 0.5);
+            --terminal-dim: #113311;
+            --glow: 0 0 10px rgba(51, 255, 0, 0.4);
         }
 
         /* Custom Retro Pixel Cursor */
@@ -53,8 +54,8 @@
         #terminal {
             max-width: 900px;
             margin: 0 auto;
-            padding-top: 20px;
-            padding-bottom: 80px;
+            padding-top: 10px;
+            padding-bottom: 120px; /* Extra padding to prevent bottom bar overlap */
         }
 
         /* Typography & Layout */
@@ -85,56 +86,98 @@
             50% { opacity: 0; }
         }
 
-        /* Sticky Navigation / Interactive Elements */
-        .menu-container {
-            position: sticky;
-            top: 0;
+        /* Fixed Bottom Command Bar (HCI Optimized) */
+        #command-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background-color: var(--terminal-dark);
-            z-index: 100;
-            padding: 10px 0;
-            box-shadow: 0 10px 10px var(--terminal-dark);
-            display: none; /* Hidden during boot */
+            border-top: 2px solid var(--terminal-green);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            box-shadow: 0 -5px 15px rgba(5, 5, 5, 0.9);
+            transform: translateY(100%);
+            transition: transform 0.5s ease-out;
         }
 
-        .menu {
-            border: 1px dashed var(--terminal-green);
-            padding: 15px;
-            background-color: rgba(5, 5, 5, 0.95);
+        #command-bar.visible {
+            transform: translateY(0);
+        }
+
+        .menu-commands {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .menu-item {
-            display: inline-block;
             color: var(--terminal-green);
             text-decoration: none;
-            padding: 5px 15px 5px 0;
-            transition: all 0.2s;
-            margin-right: 10px;
+            padding: 5px 10px;
+            transition: all 0.1s;
+            border: 1px solid transparent;
         }
 
-        .menu-item:hover {
+        .menu-item:hover, .menu-item.active {
             background-color: var(--terminal-green);
             color: var(--terminal-dark);
             text-shadow: none;
+            border: 1px solid var(--terminal-green);
         }
 
-        .menu-item::before { content: "> ./"; }
+        .menu-item span.key {
+            color: #fff;
+            background: var(--terminal-dim);
+            padding: 0 4px;
+            margin-right: 5px;
+        }
+
+        .menu-item:hover span.key, .menu-item.active span.key {
+            background: var(--terminal-dark);
+            color: var(--terminal-green);
+        }
+
+        .system-status {
+            font-size: 18px;
+            opacity: 0.8;
+            text-align: right;
+            padding-left: 20px;
+            border-left: 1px dashed var(--terminal-green);
+        }
 
         /* Content Sections */
         .section {
             display: none;
             margin-top: 30px;
-            border-top: 1px solid var(--terminal-green);
+            border-top: 1px solid var(--terminal-dim);
             padding-top: 20px;
+            animation: textFocus 0.3s ease-in;
+        }
+
+        @keyframes textFocus {
+            0% { filter: blur(4px); opacity: 0.5; }
+            100% { filter: blur(0px); opacity: 1; }
         }
 
         .project-card {
-            border: 1px solid var(--terminal-green);
+            border: 1px solid var(--terminal-dim);
             padding: 15px;
             margin-bottom: 25px;
+            transition: border-color 0.2s;
+        }
+
+        .project-card:hover {
+            border-color: var(--terminal-green);
+            background: rgba(51, 255, 0, 0.02);
         }
 
         .project-card h4 {
-            border-bottom: 1px dashed var(--terminal-green);
+            border-bottom: 1px dashed var(--terminal-dim);
             padding-bottom: 5px;
             margin-bottom: 10px;
         }
@@ -154,6 +197,23 @@
         /* Utilities */
         .hidden { display: none; }
         .prompt { color: #88ff88; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            #command-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .system-status {
+                border-left: none;
+                border-top: 1px dashed var(--terminal-green);
+                padding-left: 0;
+                padding-top: 5px;
+                width: 100%;
+                text-align: left;
+            }
+        }
     </style>
 </head>
 <body>
@@ -174,16 +234,7 @@
             </div>
             
             <p><span class="prompt">guest@system:~$</span> Welcome. I am <strong>Farhan Ahmed Onu</strong>.</p>
-            <p>System ready. Please execute a command from the directory below.</p>
-
-            <div class="menu-container" id="menu-container">
-                <div class="menu">
-                    <a class="menu-item" onclick="showSection('about')">about_me.sh</a>
-                    <a class="menu-item" onclick="showSection('projects')">view_projects.exe</a>
-                    <a class="menu-item" onclick="showSection('skills')">skills.bat</a>
-                    <a class="menu-item" onclick="showSection('contact')">contact.txt</a>
-                </div>
-            </div>
+            <p>System ready. Select a command from the bottom terminal panel to begin.</p>
 
             <div id="about" class="section">
                 <h3>--- ABOUT ME ---</h3>
@@ -216,7 +267,7 @@
                         <li>Integrated a Django backend with Llama to process natural language queries and generate context-aware PC part recommendations.</li>
                         <li>Designed and connected a NoSQL (Firebase) and SQLite database system to manage user data and real-time product inventory for recommendation and comparison.</li>
                         <li>Implemented a "Build PC" module and a part comparison engine, enabling users to evaluate performance, price, and compatibility of selected components.</li>
-                        <li>Applied prompt engineering and structured querying to interpret user intent and retrieve relevant hardware components.</li>
+                        <li>Applied prompt engineering and structured querying to interpret user intent and retrieve relevant hardware components aligned with the store's inventory.</li>
                     </ul>
                     <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
                 </div>
@@ -330,7 +381,7 @@
                     <ul>
                         <li>A collection of Python scripts for scraping images from various sources including Google Images and general websites.</li>
                         <li>Uses BeautifulSoup4 and Selenium for Web automation and scrolling simulation.</li>
-                        <li>ChromeDriver for Browser automation. Features include Lazy-loading support with scrolling, Image size filtering, Respectful crawling with delays, Automatic folder creation, Error handling and logging.</li>
+                        <li>ChromeDriver for Browser automation (for scrolling functionality). Features include Lazy-loading support with scrolling, Image size filtering, Respectful crawling with delays, Automatic folder creation, Error handling and logging.</li>
                     </ul>
                     <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
                 </div>
@@ -361,8 +412,18 @@
 
         </div>
         
-        <div style="margin-top: 20px;"><span class="prompt hidden" id="bottom-prompt">guest@system:~$ </span><span class="cursor" id="main-cursor"></span></div>
+        <div style="margin-top: 20px; margin-bottom: 40px;"><span class="prompt hidden" id="bottom-prompt">guest@system:~$ </span><span class="cursor" id="main-cursor"></span></div>
     </div>
+</div>
+
+<div id="command-bar">
+    <div class="menu-commands">
+        <a class="menu-item" onclick="showSection('about', this)"><span class="key">[1]</span> ABOUT</a>
+        <a class="menu-item" onclick="showSection('projects', this)"><span class="key">[2]</span> PROJECTS</a>
+        <a class="menu-item" onclick="showSection('skills', this)"><span class="key">[3]</span> SKILLS</a>
+        <a class="menu-item" onclick="showSection('contact', this)"><span class="key">[4]</span> CONTACT</a>
+    </div>
+    <div class="system-status" id="sys-status">SYS.STAT: AWAITING_INPUT</div>
 </div>
 
 <script>
@@ -380,8 +441,9 @@
 
     const bootDiv = document.getElementById("boot-sequence");
     const mainInterface = document.getElementById("main-interface");
-    const menuContainer = document.getElementById("menu-container");
+    const commandBar = document.getElementById("command-bar");
     const bottomPrompt = document.getElementById("bottom-prompt");
+    const sysStatus = document.getElementById("sys-status");
     
     let bootDelay = 200; 
 
@@ -392,32 +454,59 @@
             bootDiv.appendChild(p);
             const delay = Math.random() * bootDelay + 100;
             await new Promise(r => setTimeout(r, delay));
+            window.scrollTo(0, document.body.scrollHeight);
         }
         
         await new Promise(r => setTimeout(r, 600)); 
         bootDiv.classList.add("hidden"); 
         mainInterface.classList.remove("hidden"); 
-        menuContainer.style.display = "block"; // Show sticky menu
         bottomPrompt.classList.remove("hidden");
+        
+        // Slide up the command bar
+        setTimeout(() => {
+            commandBar.classList.add("visible");
+        }, 300);
+        
+        window.scrollTo(0, 0);
     }
 
     window.onload = runBootSequence;
 
-    function showSection(sectionId) {
+    function showSection(sectionId, element) {
+        // Hide all sections
         const sections = document.querySelectorAll('.section');
         sections.forEach(sec => sec.style.display = 'none');
 
+        // Remove active class from all menu items
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => item.classList.remove('active'));
+
+        // Show targeted section
         const targetSection = document.getElementById(sectionId);
         if (targetSection) {
             targetSection.style.display = 'block';
             
-            // Adjust scrolling to account for the sticky menu height
-            const yOffset = -70; 
-            const y = targetSection.getBoundingClientRect().top + window.scrollY + yOffset;
+            // Add active class to clicked button
+            if(element) element.classList.add('active');
+
+            // Update System Status Text
+            sysStatus.textContent = "SYS.STAT: VIEWING_" + sectionId.toUpperCase();
             
-            window.scrollTo({top: y, behavior: 'smooth'});
+            // Scroll to the top of the interface
+            mainInterface.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
+
+    // Allow keyboard navigation for the true retro feel
+    document.addEventListener('keydown', function(event) {
+        if(commandBar.classList.contains('visible')) {
+            const keys = ['1', '2', '3', '4'];
+            if(keys.includes(event.key)) {
+                const items = document.querySelectorAll('.menu-item');
+                items[parseInt(event.key) - 1].click();
+            }
+        }
+    });
 </script>
 
 </body>
