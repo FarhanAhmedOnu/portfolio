@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Portfolio - Terminal V1.0</title>
+    <style>
+        /* === RETRO CSS STYLES === */
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+        :root {
+            --terminal-green: #33ff00;
+            --terminal-dark: #050505;
+            --glow: 0 0 10px rgba(51, 255, 0, 0.5);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--terminal-dark);
+            color: var(--terminal-green);
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 22px;
+            overflow-x: hidden;
+        }
+
+        /* CRT Screen & Scanline Effect */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .crt {
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            text-shadow: var(--glow);
+        }
+
+        #terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        /* Typography & Layout */
+        h1, h2, h3 { margin: 0 0 10px 0; font-weight: normal; }
+        p { margin: 0 0 15px 0; line-height: 1.4; }
+        
+        .ascii-art {
+            white-space: pre;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: var(--terminal-green);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Navigation / Interactive Elements */
+        .menu {
+            margin-top: 20px;
+            border: 1px dashed var(--terminal-green);
+            padding: 15px;
+            display: none; /* Hidden during boot sequence */
+        }
+
+        .menu-item {
+            display: block;
+            color: var(--terminal-green);
+            text-decoration: none;
+            cursor: pointer;
+            padding: 5px 0;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: var(--terminal-green);
+            color: var(--terminal-dark);
+            text-shadow: none;
+        }
+
+        .menu-item::before { content: "> ./"; }
+
+        /* Content Sections */
+        .section {
+            display: none;
+            margin-top: 30px;
+            border-top: 1px solid var(--terminal-green);
+            padding-top: 20px;
+        }
+
+        .project-card {
+            border: 1px solid var(--terminal-green);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .project-card a {
+            color: var(--terminal-green);
+            text-decoration: underline;
+        }
+
+        .project-card a:hover {
+            background-color: var(--terminal-green);
+            color: var(--terminal-dark);
+        }
+
+        /* Utilities */
+        .hidden { display: none; }
+        .prompt { color: #88ff88; }
+    </style>
+</head>
+<body>
+
+<div class="crt">
+    <div id="terminal">
+        <div id="boot-sequence"></div>
+        
+        <div id="main-interface" class="hidden">
+            <div class="ascii-art">
+  _____   _____      _____  ____  _____ _______ ______ ____  _      _____ ____  
+ / ____| / ____|    |  __ \|  _ \|  __ \__   __|  ____/ __ \| |    |_   _/ __ \ 
+| |     | (___      | |__) | |_) | |  | | | |  | |__ | |  | | |      | || |  | |
+| |      \___ \     |  ___/|  _ <| |  | | | |  |  __|| |  | | |      | || |  | |
+| |____  ____) |    | |    | |_) | |__| | | |  | |   | |__| | |____ _| || |__| |
+ \_____||_____/     |_|    |____/|_____/  |_|  |_|    \____/|______|_____\____/ 
+            </div>
+            
+            <p><span class="prompt">guest@system:~$</span> Welcome. I am <strong>[YOUR NAME HERE]</strong>, a Computer Science student and developer.</p>
+            <p>System ready. Please execute a command from the directory below.</p>
+
+            <div class="menu" id="interactive-menu">
+                <a class="menu-item" onclick="showSection('about')">about_me.sh</a>
+                <a class="menu-item" onclick="showSection('projects')">view_projects.exe</a>
+                <a class="menu-item" onclick="showSection('skills')">skills.bat</a>
+                <a class="menu-item" onclick="showSection('contact')">contact_info.txt</a>
+            </div>
+
+            <div id="about" class="section">
+                <h3>--- ABOUT ME ---</h3>
+                <p>Hello, World! I am a passionate Computer Science student specializing in frontend development, systems programming, and retro aesthetics.</p>
+                <p>Status: Currently seeking internship opportunities for Summer 2026.</p>
+                <p>Location: Earth (Usually behind a keyboard).</p>
+            </div>
+
+            <div id="projects" class="section">
+                <h3>--- PROJECTS DIRECTORY ---</h3>
+                
+                <div class="project-card">
+                    <h4>> Project Name: Retro Terminal Portfolio</h4>
+                    <p><strong>Stack:</strong> HTML5, CSS3, Vanilla JS</p>
+                    <p><strong>Description:</strong> A fully responsive, frontend-only portfolio designed to mimic legacy computer systems with CRT effects and typing animations.</p>
+                    <a href="#">[View Source Code]</a> | <a href="#">[Live Demo]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Project Name: Algorithm Visualizer</h4>
+                    <p><strong>Stack:</strong> React, Node.js, Python</p>
+                    <p><strong>Description:</strong> Built an interactive web app that visually demonstrates how sorting algorithms (QuickSort, MergeSort, Dijkstra's) execute in real-time.</p>
+                    <a href="#">[View Source Code]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Project Name: [YOUR PROJECT 3]</h4>
+                    <p><strong>Stack:</strong> [Tech Stack]</p>
+                    <p><strong>Description:</strong> [Brief explanation of the problem you solved and how you built it.]</p>
+                    <a href="#">[Link to Repo]</a>
+                </div>
+            </div>
+
+            <div id="skills" class="section">
+                <h3>--- SYSTEM CAPABILITIES ---</h3>
+                <p><strong>LANGUAGES:</strong> JavaScript (ES6+), Python, C++, Java, SQL</p>
+                <p><strong>FRONTEND:</strong> React, HTML5/CSS3, Tailwind, Three.js</p>
+                <p><strong>BACKEND:</strong> Node.js, Express, Django, PostgreSQL</p>
+                <p><strong>TOOLS:</strong> Git, Docker, Linux/Unix, Bash</p>
+            </div>
+
+            <div id="contact" class="section">
+                <h3>--- ESTABLISH CONNECTION ---</h3>
+                <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+                <p>GitHub: <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
+                <p>LinkedIn: <a href="https://linkedin.com/in/yourusername" target="_blank">linkedin.com/in/yourusername</a></p>
+                <br>
+                <p><em>End of file.</em></p>
+            </div>
+
+        </div>
+        
+        <div><span class="prompt hidden" id="bottom-prompt">guest@system:~$ </span><span class="cursor" id="main-cursor"></span></div>
+    </div>
+</div>
+
+<script>
+    /* === RETRO JS LOGIC === */
+    
+    // 1. Boot Sequence Logic
+    const bootLines = [
+        "BIOS Date 04/02/26 18:21:52 Ver 08.00.15",
+        "CPU: Intel(R) Core(TM) CS-Student CPU @ 3.40GHz",
+        "Speed : 3.40 GHz",
+        "Press DEL to enter SETUP",
+        "4096MB OK",
+        "Loading kernel...",
+        "Initializing retro protocols...",
+        "Mounting file systems... [OK]",
+        "Starting user interface... [OK]",
+        "Connection established."
+    ];
+
+    const bootDiv = document.getElementById("boot-sequence");
+    const mainInterface = document.getElementById("main-interface");
+    const menu = document.getElementById("interactive-menu");
+    const bottomPrompt = document.getElementById("bottom-prompt");
+    
+    let bootDelay = 300; // ms between boot lines
+
+    async function runBootSequence() {
+        for (let i = 0; i < bootLines.length; i++) {
+            const p = document.createElement("p");
+            p.textContent = bootLines[i];
+            bootDiv.appendChild(p);
+            // Simulate variable loading times
+            const delay = Math.random() * bootDelay + 100;
+            await new Promise(r => setTimeout(r, delay));
+        }
+        
+        await new Promise(r => setTimeout(r, 800)); // Pause before clearing
+        bootDiv.classList.add("hidden"); // Clear boot sequence
+        mainInterface.classList.remove("hidden"); // Show main portfolio
+        menu.style.display = "block";
+        bottomPrompt.classList.remove("hidden");
+    }
+
+    // Start boot sequence on load
+    window.onload = runBootSequence;
+
+    // 2. Navigation Logic
+    function showSection(sectionId) {
+        // Hide all sections first
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(sec => sec.style.display = 'none');
+
+        // Show the targeted section
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.style.display = 'block';
+            
+            // Auto-scroll to the section smoothly
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+</script>
+
+</body>
+</html>
