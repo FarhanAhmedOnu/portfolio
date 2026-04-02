@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS Portfolio - Terminal V1.0</title>
+    <title>Farhan Ahmed Onu - Terminal OS</title>
     <style>
         /* === RETRO CSS STYLES === */
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
@@ -12,6 +12,11 @@
             --terminal-green: #33ff00;
             --terminal-dark: #050505;
             --glow: 0 0 10px rgba(51, 255, 0, 0.5);
+        }
+
+        /* Custom Retro Pixel Cursor */
+        * {
+            cursor: url('data:image/svg+xml;utf8,<svg width="18" height="24" viewBox="0 0 15 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0V16L4 12L7 19L9 18L6 11H11L0 0Z" fill="%2333ff00" stroke="%23050505" stroke-width="1"/></svg>'), auto !important;
         }
 
         body, html {
@@ -29,7 +34,7 @@
         .crt::before {
             content: " ";
             display: block;
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
@@ -49,17 +54,21 @@
             max-width: 900px;
             margin: 0 auto;
             padding-top: 20px;
+            padding-bottom: 80px;
         }
 
         /* Typography & Layout */
         h1, h2, h3 { margin: 0 0 10px 0; font-weight: normal; }
         p { margin: 0 0 15px 0; line-height: 1.4; }
+        ul { margin-top: 0; margin-bottom: 15px; padding-left: 20px; }
+        li { margin-bottom: 5px; }
         
         .ascii-art {
             white-space: pre;
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 20px;
             line-height: 1.2;
+            overflow-x: auto;
         }
 
         .cursor {
@@ -76,21 +85,30 @@
             50% { opacity: 0; }
         }
 
-        /* Navigation / Interactive Elements */
+        /* Sticky Navigation / Interactive Elements */
+        .menu-container {
+            position: sticky;
+            top: 0;
+            background-color: var(--terminal-dark);
+            z-index: 100;
+            padding: 10px 0;
+            box-shadow: 0 10px 10px var(--terminal-dark);
+            display: none; /* Hidden during boot */
+        }
+
         .menu {
-            margin-top: 20px;
             border: 1px dashed var(--terminal-green);
             padding: 15px;
-            display: none; /* Hidden during boot sequence */
+            background-color: rgba(5, 5, 5, 0.95);
         }
 
         .menu-item {
-            display: block;
+            display: inline-block;
             color: var(--terminal-green);
             text-decoration: none;
-            cursor: pointer;
-            padding: 5px 0;
+            padding: 5px 15px 5px 0;
             transition: all 0.2s;
+            margin-right: 10px;
         }
 
         .menu-item:hover {
@@ -112,12 +130,20 @@
         .project-card {
             border: 1px solid var(--terminal-green);
             padding: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .project-card h4 {
+            border-bottom: 1px dashed var(--terminal-green);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .project-card a {
             color: var(--terminal-green);
             text-decoration: underline;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .project-card a:hover {
@@ -138,136 +164,258 @@
         
         <div id="main-interface" class="hidden">
             <div class="ascii-art">
-  _____   _____      _____  ____  _____ _______ ______ ____  _      _____ ____  
- / ____| / ____|    |  __ \|  _ \|  __ \__   __|  ____/ __ \| |    |_   _/ __ \ 
-| |     | (___      | |__) | |_) | |  | | | |  | |__ | |  | | |      | || |  | |
-| |      \___ \     |  ___/|  _ <| |  | | | |  |  __|| |  | | |      | || |  | |
-| |____  ____) |    | |    | |_) | |__| | | |  | |   | |__| | |____ _| || |__| |
- \_____||_____/     |_|    |____/|_____/  |_|  |_|    \____/|______|_____\____/ 
+  _____          _____  _    _          _   _ 
+ |  __ \   /\   |  __ \| |  | |   /\   | \ | |
+ | |  | | /  \  | |__) | |__| |  /  \  |  \| |
+ | |  | |/ /\ \ |  _  /|  __  | / /\ \ | . ` |
+ | |__| / ____ \| | \ \| |  | |/ ____ \| |\  |
+ |_____/_/    \_\_|  \_\_|  |_/_/    \_\_| \_|
+                                              
             </div>
             
-            <p><span class="prompt">guest@system:~$</span> Welcome. I am <strong>[YOUR NAME HERE]</strong>, a Computer Science student and developer.</p>
+            <p><span class="prompt">guest@system:~$</span> Welcome. I am <strong>Farhan Ahmed Onu</strong>.</p>
             <p>System ready. Please execute a command from the directory below.</p>
 
-            <div class="menu" id="interactive-menu">
-                <a class="menu-item" onclick="showSection('about')">about_me.sh</a>
-                <a class="menu-item" onclick="showSection('projects')">view_projects.exe</a>
-                <a class="menu-item" onclick="showSection('skills')">skills.bat</a>
-                <a class="menu-item" onclick="showSection('contact')">contact_info.txt</a>
+            <div class="menu-container" id="menu-container">
+                <div class="menu">
+                    <a class="menu-item" onclick="showSection('about')">about_me.sh</a>
+                    <a class="menu-item" onclick="showSection('projects')">view_projects.exe</a>
+                    <a class="menu-item" onclick="showSection('skills')">skills.bat</a>
+                    <a class="menu-item" onclick="showSection('contact')">contact.txt</a>
+                </div>
             </div>
 
             <div id="about" class="section">
                 <h3>--- ABOUT ME ---</h3>
-                <p>Hello, World! I am a passionate Computer Science student specializing in frontend development, systems programming, and retro aesthetics.</p>
-                <p>Status: Currently seeking internship opportunities for Summer 2026.</p>
-                <p>Location: Earth (Usually behind a keyboard).</p>
+                <p>Results-oriented AI/ML Engineer with extensive hands-on experience in building scalable machine learning solutions. Proficient in Python, SQL, and Deep Learning frameworks (PyTorch, TensorFlow). Proven track record in delivering industry-level projects ranging from Computer Vision disease detection systems to complex NLP agents using RAG and LLMs. Skilled in the full ML lifecycle from data preprocessing and feature engineering to model tuning, XAI implementation, and MLOps deployment.</p>
+                <p><strong>Education:</strong> Bachelor of Science in Computer Science & Engineering from Jahangirnagar University, Savar, Dhaka (2020-2025). CGPA: 3.4/4.0.</p>
+                <p><strong>Experience:</strong> Mentor at JU Robotics Club (2023-2025). Teach new members and juniors commonly used algorithms and hardware components. Review and provide feedback on robotics code.</p>
+                <p>Location: Dhaka, Bangladesh</p>
             </div>
 
             <div id="projects" class="section">
                 <h3>--- PROJECTS DIRECTORY ---</h3>
+
+                <div class="project-card">
+                    <h4>> End-to-End AI Diabetes Diagnosis System</h4>
+                    <p><strong>Stack:</strong> Python, XGBoost, LLMs, Flask</p>
+                    <ul>
+                        <li>Developed a dual-agent diagnostic system combining predictive modeling with a conversational AI interface (LLAMA 3.2).</li>
+                        <li>Achieved 95.97% accuracy and 0.982 ROC AUC using XGBoost, improving minority class detection by addressing 1:9 class imbalance with SMOTENC.</li>
+                        <li>Implemented Explainable AI (XAI) using SHAP and LIME to provide transparent feature importance rankings (e.g., Glucose, Age) for clinical trust.</li>
+                        <li>Deployed the solution using a microservices architecture with a Flask-based API Gateway.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> GadgetForge: Android App for PC Part Recommendation</h4>
+                    <p><strong>Stack:</strong> Java, Llama 2, Django, SQLite, Firebase</p>
+                    <ul>
+                        <li>Developed an Android application in Java that assists users in building custom PCs by recommending compatible parts based on usage preferences.</li>
+                        <li>Integrated a Django backend with Llama to process natural language queries and generate context-aware PC part recommendations.</li>
+                        <li>Designed and connected a NoSQL (Firebase) and SQLite database system to manage user data and real-time product inventory for recommendation and comparison.</li>
+                        <li>Implemented a "Build PC" module and a part comparison engine, enabling users to evaluate performance, price, and compatibility of selected components.</li>
+                        <li>Applied prompt engineering and structured querying to interpret user intent and retrieve relevant hardware components.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Hexapod: Six-Legged Smart Robot</h4>
+                    <p><strong>Stack:</strong> Arduino (ESP32), Python, OpenCV, PyCOLMAP, Meshroom</p>
+                    <ul>
+                        <li>Designed and built a six-legged walking robot using ESP32 and Arduino code, capable of traversing varied surfaces with stability and precision.</li>
+                        <li>Implemented wireless control via Wi-Fi and Bluetooth, enabling directional movement and adjustable speed through a mobile interface.</li>
+                        <li>Integrated obstacle avoidance using sensor feedback, enhancing autonomous navigation in dynamic environments.</li>
+                        <li>Added onboard camera for visual processing; utilized OpenCV for real-time face detection and implemented face tracking.</li>
+                        <li>Developed a photogrammetry pipeline using PyCOLMAP and Meshroom to generate accurate 3D models of the robot's environment from captured images.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Tea Leaf Disease Detection & Classification</h4>
+                    <p><strong>Stack:</strong> PyTorch, EfficientNet-V2, CV, Gradio</p>
+                    <ul>
+                        <li>Engineered a robust deep learning pipeline using EfficientNet-V2-S to classify tea leaf diseases across 8 distinct classes using a dataset of 5,278 images.</li>
+                        <li>Applied advanced data augmentation (RandAugment, ColorJitter) to prevent overfitting and ensure model generalization.</li>
+                        <li>Deployment: Built a real-time inference interface using Gradio, enabling instant disease categorization and confidence scoring.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> RAG PDF Chat Assistant with Local LLMs</h4>
+                    <p><strong>Stack:</strong> Ollama, ChromaDB, Streamlit, Sentence Transformers</p>
+                    <ul>
+                        <li>Architected a privacy-focused Retrieval-Augmented Generation (RAG) system processing local PDF documents using Ollama (Qwen, Llama3).</li>
+                        <li>Optimized retrieval accuracy by implementing a custom overlapping text chunking algorithm and persistent vector storage via ChromaDB.</li>
+                        <li>Developed a user-friendly Streamlit web interface for seamless document uploading and interactive Q&A. Supports multiple PDF uploads.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
                 
                 <div class="project-card">
-                    <h4>> Project Name: Retro Terminal Portfolio</h4>
-                    <p><strong>Stack:</strong> HTML5, CSS3, Vanilla JS</p>
-                    <p><strong>Description:</strong> A fully responsive, frontend-only portfolio designed to mimic legacy computer systems with CRT effects and typing animations.</p>
-                    <a href="#">[View Source Code]</a> | <a href="#">[Live Demo]</a>
+                    <h4>> Ju-Exam-Office-Management-System</h4>
+                    <p><strong>Stack:</strong> Django, pyTEST, Sphinx, CircleCI</p>
+                    <ul>
+                        <li>Fullstack project aiming to process all tasks done by an exam office.</li>
+                        <li>Features include: Creating and Publishing Exam Schedules, Publish Result, Manage Exam Materials, Manage Answer Scripts, Manage Teacher Remuneration, Approving special accommodations.</li>
+                        <li>Provides students with a seamless interface to access their results.</li>
+                        <li>Tested using pyTEST, documented with Sphinx, and utilizes CircleCI for CI/CD pipelines.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
                 </div>
 
                 <div class="project-card">
-                    <h4>> Project Name: Algorithm Visualizer</h4>
-                    <p><strong>Stack:</strong> React, Node.js, Python</p>
-                    <p><strong>Description:</strong> Built an interactive web app that visually demonstrates how sorting algorithms (QuickSort, MergeSort, Dijkstra's) execute in real-time.</p>
-                    <a href="#">[View Source Code]</a>
+                    <h4>> Automated Prompt Generation</h4>
+                    <p><strong>Stack:</strong> Google Gemini API, Gradio, NLP</p>
+                    <ul>
+                        <li>Designed a system that extracts content from PDFs/PPTXs and utilizes Google Gemini to automatically generate Zero-shot and Few-shot prompts.</li>
+                        <li>Implemented a structured workflow where generated prompts are saved to JSON and used to drive a context-aware chatbot interface.</li>
+                        <li>Created a Gradio-based UI allowing users to leverage extracted document context for intelligent Q&A without manual prompt crafting.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
                 </div>
 
                 <div class="project-card">
-                    <h4>> Project Name: [YOUR PROJECT 3]</h4>
-                    <p><strong>Stack:</strong> [Tech Stack]</p>
-                    <p><strong>Description:</strong> [Brief explanation of the problem you solved and how you built it.]</p>
-                    <a href="#">[Link to Repo]</a>
+                    <h4>> Ollama Smart Assistant & Search Engine</h4>
+                    <p><strong>Stack:</strong> Python, Flask, DuckDuckGo API</p>
+                    <ul>
+                        <li>Designed an intelligent decision engine that dynamically routes user queries between a local LLM and real-time web search (DuckDuckGo) based on information freshness needs.</li>
+                        <li>Implemented keyword optimization logic to refine search queries, improving the relevance of retrieved information before synthesis.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> IoT-Based Smart Bus Transportation System</h4>
+                    <p><strong>Stack:</strong> Firebase, Tailwind CSS, Leaflet maps, IoT</p>
+                    <ul>
+                        <li>Real-Time Tracking: Provide passengers with live bus locations using GPS and IoT.</li>
+                        <li>Route Search: Enable users to search and plan journeys efficiently.</li>
+                        <li>Automated Fare Calculation: Use QR codes to measure travel time/distance for accurate billing.</li>
+                        <li>Data Management: Store and sync data via Firebase for reliability.</li>
+                        <li>Three-Layer Architecture: Device Layer (Micro controller and other components in bus), Cloud/Server Layer(Firebase, Mozilla Location Services), Web Interface Layer(Tailwind CSS, Leaflet maps).</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Robot Hand Control via Hand Gesture Recognition</h4>
+                    <p><strong>Stack:</strong> Computer Vision, MediaPipe, PySerial, Arduino</p>
+                    <ul>
+                        <li>Enables real-time control of a robot hand using computer vision and hand gesture recognition.</li>
+                        <li>The system uses a webcam to detect hand movements and translates them into servo commands for a robotic hand.</li>
+                        <li>Real-time hand tracking is done using MediaPipe. Data is sent to Arduino using PySerial.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Art Portfolio Website</h4>
+                    <p><strong>Stack:</strong> React, Tailwind CSS, HTML5, JavaScript</p>
+                    <ul>
+                        <li>A sleek, dark-themed React + Tailwind CSS art portfolio inspired by ArtStation. Component-based structure for scalability.</li>
+                        <li>Fully Responsive on all screen sizes. Uses JSON files to store data about artworks and other data.</li>
+                        <li>UI for CRUD Operations for updating JSON data. Deployable on GitHub Pages.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
+                </div>
+
+                <div class="project-card">
+                    <h4>> Image Scraper</h4>
+                    <p><strong>Stack:</strong> Python, BeautifulSoup4, Selenium</p>
+                    <ul>
+                        <li>A collection of Python scripts for scraping images from various sources including Google Images and general websites.</li>
+                        <li>Uses BeautifulSoup4 and Selenium for Web automation and scrolling simulation.</li>
+                        <li>ChromeDriver for Browser automation. Features include Lazy-loading support with scrolling, Image size filtering, Respectful crawling with delays, Automatic folder creation, Error handling and logging.</li>
+                    </ul>
+                    <a href="https://github.com/farhanahmedonu" target="_blank">[View on GitHub]</a>
                 </div>
             </div>
 
             <div id="skills" class="section">
                 <h3>--- SYSTEM CAPABILITIES ---</h3>
-                <p><strong>LANGUAGES:</strong> JavaScript (ES6+), Python, C++, Java, SQL</p>
-                <p><strong>FRONTEND:</strong> React, HTML5/CSS3, Tailwind, Three.js</p>
-                <p><strong>BACKEND:</strong> Node.js, Express, Django, PostgreSQL</p>
-                <p><strong>TOOLS:</strong> Git, Docker, Linux/Unix, Bash</p>
+                <p><strong>LANGUAGES:</strong> Python, JavaScript/TypeScript, Java, C, C++, SQL, Bash Scripting</p>
+                <p><strong>AI/ML & DATA SCIENCE:</strong> XGBoost, LightGBM, Scikit-learn, SMOTE/SMOTENC, SHAP/LIME (XAI), PyTorch, TensorFlow, Keras, Efficient Net, Transformers, pandas</p>
+                <p><strong>NLP & GEN AI:</strong> RAG, LangChain, Ollama, ChromaDB, Google Gemini API, Prompt Engineering, InstructLab, Llama 2/3</p>
+                <p><strong>COMPUTER VISION:</strong> Image Classification, Data Augmentation (Albumentations), OpenCV, Face Tracking, PyCOLMAP, Meshroom, Photogrammetry</p>
+                <p><strong>FRONTEND:</strong> React, HTML5, Tailwind</p>
+                <p><strong>BACKEND & DEPLOYMENT:</strong> Node.js, Express.js, Django, Flask, Streamlit, Gradio, API Development, Docker, RESTful APIs</p>
+                <p><strong>DATABASES:</strong> PostgreSQL, MongoDB, MySQL, SQLite, Firebase</p>
+                <p><strong>DEVOPS, TOOLS & TESTING:</strong> Git, GitHub Actions, CI/CD Pipelines, Linux, Selenium WebDriver, pytest, Postman, Insomnia, Trello, Agile/Scrum</p>
+                <p><strong>MOBILE & EMBEDDED:</strong> Android (Java), Arduino, ESP32</p>
             </div>
 
             <div id="contact" class="section">
                 <h3>--- ESTABLISH CONNECTION ---</h3>
-                <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
-                <p>GitHub: <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
-                <p>LinkedIn: <a href="https://linkedin.com/in/yourusername" target="_blank">linkedin.com/in/yourusername</a></p>
+                <p>Email: <a href="mailto:farhanahmedonu@gmail.com">farhanahmedonu@gmail.com</a></p>
+                <p>Phone: 01969120538 | +8801571482059</p>
+                <p>GitHub: <a href="https://github.com/farhanahmedonu" target="_blank">github.com/farhanahmedonu</a></p>
+                <p>LinkedIn: <a href="https://linkedin.com/in/farhanahmedonu" target="_blank">linkedin.com/in/farhanahmedonu</a></p>
                 <br>
                 <p><em>End of file.</em></p>
             </div>
 
         </div>
         
-        <div><span class="prompt hidden" id="bottom-prompt">guest@system:~$ </span><span class="cursor" id="main-cursor"></span></div>
+        <div style="margin-top: 20px;"><span class="prompt hidden" id="bottom-prompt">guest@system:~$ </span><span class="cursor" id="main-cursor"></span></div>
     </div>
 </div>
 
 <script>
     /* === RETRO JS LOGIC === */
-    
-    // 1. Boot Sequence Logic
     const bootLines = [
         "BIOS Date 04/02/26 18:21:52 Ver 08.00.15",
-        "CPU: Intel(R) Core(TM) CS-Student CPU @ 3.40GHz",
-        "Speed : 3.40 GHz",
-        "Press DEL to enter SETUP",
-        "4096MB OK",
+        "CPU: Farhan Core(TM) AI/ML Engineer @ 4.00GHz",
+        "Memory: 640K Base OK",
         "Loading kernel...",
-        "Initializing retro protocols...",
-        "Mounting file systems... [OK]",
+        "Initializing neural networks... [OK]",
+        "Mounting project directories... [OK]",
         "Starting user interface... [OK]",
         "Connection established."
     ];
 
     const bootDiv = document.getElementById("boot-sequence");
     const mainInterface = document.getElementById("main-interface");
-    const menu = document.getElementById("interactive-menu");
+    const menuContainer = document.getElementById("menu-container");
     const bottomPrompt = document.getElementById("bottom-prompt");
     
-    let bootDelay = 300; // ms between boot lines
+    let bootDelay = 200; 
 
     async function runBootSequence() {
         for (let i = 0; i < bootLines.length; i++) {
             const p = document.createElement("p");
             p.textContent = bootLines[i];
             bootDiv.appendChild(p);
-            // Simulate variable loading times
             const delay = Math.random() * bootDelay + 100;
             await new Promise(r => setTimeout(r, delay));
         }
         
-        await new Promise(r => setTimeout(r, 800)); // Pause before clearing
-        bootDiv.classList.add("hidden"); // Clear boot sequence
-        mainInterface.classList.remove("hidden"); // Show main portfolio
-        menu.style.display = "block";
+        await new Promise(r => setTimeout(r, 600)); 
+        bootDiv.classList.add("hidden"); 
+        mainInterface.classList.remove("hidden"); 
+        menuContainer.style.display = "block"; // Show sticky menu
         bottomPrompt.classList.remove("hidden");
     }
 
-    // Start boot sequence on load
     window.onload = runBootSequence;
 
-    // 2. Navigation Logic
     function showSection(sectionId) {
-        // Hide all sections first
         const sections = document.querySelectorAll('.section');
         sections.forEach(sec => sec.style.display = 'none');
 
-        // Show the targeted section
         const targetSection = document.getElementById(sectionId);
         if (targetSection) {
             targetSection.style.display = 'block';
             
-            // Auto-scroll to the section smoothly
-            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Adjust scrolling to account for the sticky menu height
+            const yOffset = -70; 
+            const y = targetSection.getBoundingClientRect().top + window.scrollY + yOffset;
+            
+            window.scrollTo({top: y, behavior: 'smooth'});
         }
     }
 </script>
