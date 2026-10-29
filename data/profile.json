@@ -1,0 +1,12 @@
+{
+  "name": "Farhan Ahmed Onu",
+  "eyebrow": "Deep Learning · Edge AI · Explainable ML",
+  "role": "CSE Graduate · MSc Researcher — Deep Learning, Efficient Models & Explainable AI",
+  "summary": "CSE graduate and ongoing MSc student at Jahangirnagar University, working on deep learning, efficient and quantized models for edge deployment, medical image analysis, and explainable AI. Published in IEEE venues, with hands-on experience across PyTorch, TensorFlow, ONNX Runtime, ROS2, and backend / data pipelines. IELTS Academic: 7.5.",
+  "links": [
+    { "label": "Email",    "url": "mailto:farhanahmedonu@gmail.com" },
+    { "label": "GitHub",   "url": "https://github.com/FarhanAhmedOnu" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/FarhanAhmedOnu" },
+    { "label": "CV (PDF)", "url": "assets/CV_Farhan.pdf" }
+  ]
+}

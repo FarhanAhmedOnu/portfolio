@@ -1,0 +1,43 @@
+{
+  "title": "Technical Skills",
+  "description": "",
+  "groups": [
+    {
+      "label": "AI / ML & Data Science",
+      "items": [
+        "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "LLM Integration",
+        "Time-Series Forecasting", "Diffusion Models", "xLSTM (familiar)",
+        "Autoregressive Modeling", "Model Quantization (INT8/INT4)",
+        "ONNX Runtime", "Data Preprocessing", "Model Evaluation"
+      ]
+    },
+    {
+      "label": "Programming",
+      "items": ["Python", "SQL", "Java", "C", "C++", "JavaScript / TypeScript"]
+    },
+    {
+      "label": "Robotics & 3D Perception",
+      "items": ["ROS2", "Open3D", "Point Cloud Processing", "Sensor Fusion", "Monocular Depth Estimation"]
+    },
+    {
+      "label": "Backend & Data",
+      "items": ["Django", "Node.js", "Express.js", "RESTful APIs", "ETL Pipelines"]
+    },
+    {
+      "label": "Databases",
+      "items": ["PostgreSQL", "MongoDB", "MySQL", "SQLite"]
+    },
+    {
+      "label": "Cloud & DevOps",
+      "items": ["AWS", "Docker", "Git", "GitHub Actions", "CI/CD Pipelines", "Linux"]
+    },
+    {
+      "label": "Other Tools",
+      "items": ["Postman", "Jira", "Trello", "Agile / Scrum"]
+    },
+    {
+      "label": "Language Proficiency",
+      "items": ["IELTS Academic 7.5", "Listening 8.0", "Reading 8.0", "Writing 6.5", "Speaking 7.0"]
+    }
+  ]
+}

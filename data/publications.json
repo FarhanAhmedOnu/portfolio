@@ -1,0 +1,58 @@
+{
+  "title": "Research & Publications",
+  "description": "Peer-reviewed and forthcoming work on medical image analysis, latency-aware benchmarking, and fairness in clinical machine learning.",
+  "sections": [
+    {
+      "id": "published",
+      "label": "Published",
+      "items": [
+        {
+          "title": "Brain Tumor MRI Classification using Enhanced DenseNet169",
+          "authors": "F. A. Onu",
+          "venue": "2026 IEEE QPAIN",
+          "year": "2026",
+          "description": "A robust deep learning framework for classifying brain tumors (Glioma, Meningioma, Normal, Pituitary) from MRI scans. Achieved 98.60% accuracy using an enhanced DenseNet169 backbone with 5-fold cross-validation, custom data augmentation, and Grad-CAM explainability, with perfect classification of Pituitary tumors.",
+          "tags": ["Medical Imaging", "DenseNet169", "Grad-CAM", "Explainable AI"],
+          "links": [
+            {
+              "label": "DOI",
+              "url": "https://doi.org/10.1109/QPAIN69676.2026.11546223"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "accepted",
+      "label": "Accepted · In Press",
+      "items": [
+        {
+          "title": "Latency-Aware Benchmarking of Deep Learning Models for RF Signal Classification",
+          "authors": "F. A. Onu",
+          "venue": "2026 IEEE International Conference on Microwave, Antennas, RF and Sensors (MARSCON)",
+          "year": "2026",
+          "description": "Accepted, in press. Benchmarks deep learning architectures for radio-frequency signal classification, with a focus on inference latency alongside predictive accuracy.",
+          "tags": ["RF Signal Classification", "Benchmarking", "Inference Latency"]
+        },
+        {
+          "title": "Exploring Metabolic Subgroups and Algorithmic Fairness in a Bangladesh Type-2 Diabetes Cohort: An Explainable Machine Learning Case Study",
+          "authors": "F. A. Onu, S. M., J. K. Das",
+          "venue": "IEEE iCONEECT",
+          "year": "2026",
+          "description": "Applied explainable machine learning to a Bangladeshi Type-2 diabetes cohort to identify metabolic subgroups and assess algorithmic fairness across them — examining how subgroup-specific model behaviour may introduce bias in clinical risk prediction. Conducted as part of the BSc research project.",
+          "tags": ["Explainable ML", "Algorithmic Fairness", "Clinical Risk Prediction", "Healthcare"]
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "label": "Under Review",
+      "items": []
+    },
+    {
+      "id": "preprint",
+      "label": "Preprints",
+      "items": []
+    }
+  ]
+}

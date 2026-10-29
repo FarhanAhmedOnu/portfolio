@@ -1,0 +1,32 @@
+{
+  "title": "Software & Engineering Projects",
+  "description": "Applied engineering work spanning robotics perception, on-device inference, and LLM-powered tooling — from prototype to measured benchmark.",
+  "items": [
+    {
+      "category": "Robotics & 3D Perception",
+      "title": "3D Mapping Using a Mechanically Oscillating 2D LiDAR",
+      "description": "Built a sub-$150 3D scanner by mounting an RPLIDAR C1 on an oscillating MG996R servo, tagging each 2D scan with its tilt angle and reassembling slices into ROS2 PointCloud2 maps. Compared servo-commanded (open-loop) and MPU6050 IMU-assisted (closed-loop) tilt estimation, achieving 9.1 mm plane-fit RMSE on a flat-wall test; extended the pipeline with Poisson surface meshing and a monocular depth (Depth-Anything-V2) baseline for cross-modal comparison.",
+      "highlight": "Showcased at Bangladesh Innovation Fair 2026.",
+      "tags": ["ROS2", "Open3D", "Point Clouds", "Sensor Fusion", "MPU6050", "Depth-Anything-V2"]
+    },
+    {
+      "category": "Edge AI · Model Compression",
+      "title": "Toward On-Device Mosquito Larvae Identification: Lightweight Blur-Robust Classifiers with INT8/INT4 Quantization",
+      "description": "Trained MobileNetV3-Small, EfficientNet-Lite0, and MobileViT-S on the MosquitoLarvae-7400 benchmark (7,463 images, 4 species) using a two-stage regimen and a blur / motion-blur / colour-jitter augmentation pipeline. Exported each model to ONNX and evaluated FP32, static INT8, and weight-only INT4 through real ONNX Runtime sessions. EfficientNet-Lite0 gave the best accuracy–robustness trade-off (99.73% clean / 98.66% blurred) and was the only model viable under static INT8 (96.50% at 3.5× compression). All variants benchmarked end-to-end on PC and Android via onnxruntime-web WASM.",
+      "tags": ["ONNX Runtime", "INT8 / INT4 Quantization", "Edge AI", "MobileViT", "WASM"]
+    },
+    {
+      "category": "Applied ML Systems",
+      "title": "AI-Based Diabetes Diagnosis System",
+      "description": "An end-to-end AI system for diabetes diagnosis that combines predictive machine learning with conversational LLM assistance for comprehensive patient assessment. Deliberately lightweight — runs on a budget GPU with 8 GB of VRAM.",
+      "highlight": "A portion of this work was accepted at IEEE iCONEECT.",
+      "tags": ["Machine Learning", "LLM Integration", "Healthcare", "Lightweight Deployment"]
+    },
+    {
+      "category": "LLM & RAG",
+      "title": "Localized RAG Pipeline for Cisco IOS Configuration Generation",
+      "description": "Designed an offline retrieval-augmented generation pipeline that produces Cisco IOS CLI commands from natural language using ChromaDB and sentence-transformer embeddings. Created a validated dataset of 2,254 QA pairs and benchmarked seven small language models (Mistral, Qwen3, Gemma) using custom metrics. Mistral achieved a 51% exact match, demonstrating practical, privacy-preserving local network automation.",
+      "tags": ["RAG", "ChromaDB", "LangChain", "Small Language Models", "Network Automation"]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Education",
+  "description": "",
+  "items": [
+    {
+      "degree": "MSc in Computer Science & Engineering",
+      "school": "Jahangirnagar University, Bangladesh",
+      "period": "Ongoing — expected Nov 2026",
+      "result": ""
+    },
+    {
+      "degree": "BSc in Computer Science & Engineering",
+      "school": "Jahangirnagar University, Bangladesh",
+      "period": "2025",
+      "result": "CGPA 3.4 / 4.0"
+    },
+    {
+      "degree": "Higher Secondary Certificate",
+      "school": "Jahangirnagar University School and College, Bangladesh",
+      "period": "2019",
+      "result": "GPA 5.0 / 5.0"
+    },
+    {
+      "degree": "Secondary School Certificate",
+      "school": "Jahangirnagar University School and College, Bangladesh",
+      "period": "2017",
+      "result": "GPA 5.0 / 5.0"
+    }
+  ]
+}
