@@ -11,13 +11,11 @@
           "authors": "F. A. Onu",
           "venue": "2026 IEEE QPAIN",
           "year": "2026",
+          "featured": true,
           "description": "A robust deep learning framework for classifying brain tumors (Glioma, Meningioma, Normal, Pituitary) from MRI scans. Achieved 98.60% accuracy using an enhanced DenseNet169 backbone with 5-fold cross-validation, custom data augmentation, and Grad-CAM explainability, with perfect classification of Pituitary tumors.",
           "tags": ["Medical Imaging", "DenseNet169", "Grad-CAM", "Explainable AI"],
           "links": [
-            {
-              "label": "DOI",
-              "url": "https://doi.org/10.1109/QPAIN69676.2026.11546223"
-            }
+            { "label": "DOI", "url": "https://doi.org/10.1109/QPAIN69676.2026.11546223" }
           ]
         }
       ]
@@ -39,6 +37,7 @@
           "authors": "F. A. Onu, S. M., J. K. Das",
           "venue": "IEEE iCONEECT",
           "year": "2026",
+          "featured": true,
           "description": "Applied explainable machine learning to a Bangladeshi Type-2 diabetes cohort to identify metabolic subgroups and assess algorithmic fairness across them — examining how subgroup-specific model behaviour may introduce bias in clinical risk prediction. Conducted as part of the BSc research project.",
           "tags": ["Explainable ML", "Algorithmic Fairness", "Clinical Risk Prediction", "Healthcare"]
         }

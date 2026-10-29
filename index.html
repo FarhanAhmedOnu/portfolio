@@ -5,6 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Farhan Ahmed Onu — Portfolio</title>
 <meta name="description" content="Portfolio of Farhan Ahmed Onu — CSE graduate and MSc researcher at Jahangirnagar University working on deep learning, efficient/quantized models for edge deployment, medical image analysis, and explainable AI." />
+<meta name="author" content="Farhan Ahmed Onu" />
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Farhan Ahmed Onu — Portfolio" />
+<meta property="og:description" content="Deep learning, edge AI, and explainable ML research and projects." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Farhan Ahmed Onu — Portfolio" />
+<meta name="twitter:description" content="Deep learning, edge AI, and explainable ML research and projects." />
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Farhan Ahmed Onu",
+  "jobTitle": "CSE Graduate & MSc Researcher",
+  "affiliation": { "@type": "Organization", "name": "Jahangirnagar University" },
+  "email": "mailto:farhanahmedonu@gmail.com",
+  "description": "Deep learning, efficient models for edge deployment, medical image analysis, and explainable AI.",
+  "sameAs": [
+    "https://github.com/FarhanAhmedOnu",
+    "https://www.linkedin.com/in/FarhanAhmedOnu"
+  ],
+  "knowsAbout": ["Deep Learning", "Edge AI", "Explainable Machine Learning", "Medical Image Analysis"]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +61,7 @@
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#skills">Skills</a>
+      <a href="#references">References</a>
     </nav>
     <button id="theme-toggle" class="theme-toggle" type="button"
             aria-label="Toggle dark mode" aria-pressed="false">
@@ -48,7 +76,7 @@
 <div class="layout">
   <main id="main" class="content">
 
-    <!-- Home: only me + quick links -->
+    <!-- Home -->
     <section class="view home" id="home" data-view>
       <div class="home-hero">
         <p class="eyebrow" id="hero-eyebrow"></p>
@@ -95,6 +123,15 @@
         <p class="section-desc" data-bind="description"></p>
       </div>
       <div class="skill-grid" id="skill-list"></div>
+    </section>
+
+    <section class="block view" id="references" data-view hidden>
+      <a class="back" href="#home">Back to home</a>
+      <div class="section-head">
+        <h2 class="section-title" data-bind="title" tabindex="-1">References</h2>
+        <p class="section-desc" data-bind="description"></p>
+      </div>
+      <div class="ref-grid" id="ref-list"></div>
     </section>
 
   </main>

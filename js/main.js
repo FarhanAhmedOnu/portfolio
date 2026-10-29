@@ -1,18 +1,16 @@
 /**
  * Bootstraps the portfolio: loads every JSON file, then hands the
  * combined object to the renderer.
- *
- * To add a new data file, add one line to DATA below and one
- * matching render call in render.js → renderAll().
  */
 import { renderAll } from './render.js';
 
 const DATA = {
-  profile:    'data/profile.json',
+  profile:      'data/profile.json',
   publications: 'data/publications.json',
-  projects:   'data/projects.json',
-  education:  'data/education.json',
-  skills:     'data/skills.json'
+  projects:     'data/projects.json',
+  education:    'data/education.json',
+  skills:       'data/skills.json',
+  references:   'data/references.json'
 };
 
 async function loadJSON(path) {

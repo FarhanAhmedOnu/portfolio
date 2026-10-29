@@ -1,9 +1,6 @@
 /**
  * Pure rendering layer. Takes plain objects (parsed from /data/*.json)
  * and writes markup into the containers defined in index.html.
- *
- * Field values are inserted as HTML — this is intentional, so you can
- * use <em>, <br> or <a> inside a description in the JSON files.
  */
 
 /* ---------- helpers ---------- */
@@ -33,11 +30,9 @@ function linksHTML(links) {
     .join('')}</div>`;
 }
 
-/** Full-detail markup for the dialog, keyed by item id (see ui.js). */
 const details = new Map();
 export const detailHTML = (id) => details.get(id) || '';
 
-/** Images: accepts `image: "x.jpg"` or `images: ["x.jpg", {src, alt, caption}]`. */
 function imageList(item) {
   return [].concat(item.images || item.image || [])
     .map((i) => (typeof i === 'string' ? { src: i } : i))
@@ -69,7 +64,6 @@ function emptyState(message) {
   return `<p class="section-desc">${message}</p>`;
 }
 
-/** Fills an <h2 data-bind="title"> / <p data-bind="description"> pair. */
 function applySectionMeta(sectionId, data) {
   const section = document.getElementById(sectionId);
   if (!section || !data) return;
@@ -133,7 +127,6 @@ function renderPublications(data) {
   const wrap = document.getElementById('pub-list');
   if (!wrap || !data) return;
 
-  // Sections with no items are skipped entirely.
   const sections = pubSections(data);
 
   if (!sections.length) {
@@ -187,6 +180,7 @@ function renderProjects(data) {
           ${p.category ? `<p class="project-kicker">${p.category}</p>` : ''}
           <h3 class="project-title"><button type="button" class="card-open" data-open="${id}">${p.title}</button></h3>
           <p class="project-desc">${p.description || ''}</p>
+          ${p.highlight ? `<p class="project-note">${p.highlight}</p>` : ''}
           ${tagsHTML((p.tags || []).slice(0, 4))}
           <span class="card-hint" aria-hidden="true">View details</span>
         </article>`;
@@ -242,6 +236,35 @@ function renderSkills(data) {
     .join('');
 }
 
+/* ---------- references ---------- */
+
+function renderReferences(data) {
+  applySectionMeta('references', data);
+  const wrap = document.getElementById('ref-list');
+  if (!wrap || !data) return;
+
+  const items = data.items || [];
+  if (!items.length) {
+    wrap.innerHTML = emptyState('References will appear here.');
+    return;
+  }
+
+  wrap.innerHTML = items
+    .map((r) => {
+      const links = [
+        r.email ? `<a href="mailto:${r.email}">${r.email}</a>` : '',
+        r.phone ? `<a href="tel:${String(r.phone).replace(/[^\d+]/g, '')}">${r.phone}</a>` : ''
+      ].filter(Boolean).join('');
+      return `
+        <div class="card">
+          <p class="ref-name">${r.name}</p>
+          <p class="ref-role">${r.role}</p>
+          ${links ? `<div class="ref-links">${links}</div>` : ''}
+        </div>`;
+    })
+    .join('');
+}
+
 /* ---------- home quick links ---------- */
 
 function renderTiles(d) {
@@ -252,10 +275,11 @@ function renderTiles(d) {
   const count = (x) => ((x || {}).items || []).length;
 
   const tiles = [
-    ['research', 'Research', 'Papers and publications', pubs],
-    ['projects', 'Projects', 'Software and engineering work', count(d.projects)],
-    ['education', 'Education', 'Degrees and results', count(d.education)],
-    ['skills', 'Skills', 'Tools and technologies', ((d.skills || {}).groups || []).length]
+    ['research',   'Research',   'Papers and publications', pubs],
+    ['projects',   'Projects',   'Software and engineering work', count(d.projects)],
+    ['education',  'Education',  'Degrees and results', count(d.education)],
+    ['skills',     'Skills',     'Tools and technologies', ((d.skills || {}).groups || []).length],
+    ['references', 'References', 'Academic references', count(d.references)]
   ];
 
   wrap.innerHTML = tiles
@@ -277,7 +301,6 @@ function renderHomePubs(data) {
   const wrap = document.getElementById('home-pubs');
   if (!wrap) return;
 
-  // Same ids as the Research page, so the details dialog matches.
   const all = pubSections(data.publications).flatMap((sec, si) =>
     sec.items.map((p, i) => ({ p, id: `pub-${si}-${i}` }))
   );
@@ -302,6 +325,7 @@ export function renderAll(data) {
   renderProjects(data.projects);
   renderEducation(data.education);
   renderSkills(data.skills);
+  renderReferences(data.references);
   renderTiles(data);
   renderHomePubs(data);
 }
