@@ -13,7 +13,8 @@
 
 <script>
   (function () {
-    var saved = localStorage.getItem("theme");
+    var saved = null;
+    try { saved = localStorage.getItem("theme"); } catch (e) {}
     if (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches) saved = "dark";
     if (saved) document.documentElement.setAttribute("data-theme", saved);
   })();
@@ -24,17 +25,15 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ================= HEADER ================= -->
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="#top">Farhan Ahmed Onu<span>.</span></a>
+    <a class="brand" href="#home">Farhan Ahmed Onu<span>.</span></a>
     <nav class="nav" aria-label="Sections">
-      <a href="#about">About</a>
+      <a href="#home">Home</a>
       <a href="#research">Research</a>
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
     </nav>
     <button id="theme-toggle" class="theme-toggle" type="button"
             aria-label="Toggle dark mode" aria-pressed="false">
@@ -44,92 +43,71 @@
   </div>
 </header>
 
-<!-- ================= LOAD ERROR ================= -->
 <div id="load-error" class="load-error" role="alert" hidden></div>
 
-<!-- ================= SIDEBAR + MAIN ================= -->
 <div class="layout">
-
-  <!-- Sidebar — profile -->
-  <aside class="sidebar" aria-label="Profile">
-    <p class="eyebrow" id="hero-eyebrow"></p>
-    <h1 id="hero-name"></h1>
-    <p class="role" id="hero-role"></p>
-    <div class="hero-links" id="hero-links"></div>
-  </aside>
-
-  <!-- Main content -->
   <main id="main" class="content">
 
-    <!-- About (takes the old hero summary) -->
-    <section class="block" id="about">
+    <!-- Home: only me + quick links -->
+    <section class="view home" id="home" data-view>
+      <div class="home-hero">
+        <p class="eyebrow" id="hero-eyebrow"></p>
+        <h1 id="hero-name" tabindex="-1"></h1>
+        <p class="role" id="hero-role"></p>
+        <p class="hero-summary" id="hero-summary"></p>
+        <div class="hero-links" id="hero-links"></div>
+      </div>
+      <nav class="tiles" id="tiles" aria-label="Explore my work"></nav>
+      <div class="home-pubs" id="home-pubs"></div>
+    </section>
+
+    <section class="block view" id="research" data-view hidden>
+      <a class="back" href="#home">Back to home</a>
       <div class="section-head">
-        <h2 class="section-title">About</h2>
+        <h2 class="section-title" data-bind="title" tabindex="-1">Research &amp; Publications</h2>
+        <p class="section-desc" data-bind="description"></p>
       </div>
-      <p class="hero-summary" id="hero-summary"></p>
+      <div class="pub-list" id="pub-list"></div>
     </section>
 
-    <!-- Research -->
-    <section class="block" id="research">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" data-bind="title">Research &amp; Publications</h2>
-          <p class="section-desc" data-bind="description"></p>
-        </div>
-        <div class="pub-list" id="pub-list"></div>
+    <section class="block view" id="projects" data-view hidden>
+      <a class="back" href="#home">Back to home</a>
+      <div class="section-head">
+        <h2 class="section-title" data-bind="title" tabindex="-1">Software &amp; Engineering Projects</h2>
+        <p class="section-desc" data-bind="description"></p>
       </div>
+      <div class="project-grid" id="project-list"></div>
     </section>
 
-    <!-- Projects -->
-    <section class="block" id="projects">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" data-bind="title">Software &amp; Engineering Projects</h2>
-          <p class="section-desc" data-bind="description"></p>
-        </div>
-        <div class="project-grid" id="project-list"></div>
+    <section class="block view" id="education" data-view hidden>
+      <a class="back" href="#home">Back to home</a>
+      <div class="section-head">
+        <h2 class="section-title" data-bind="title" tabindex="-1">Education</h2>
+        <p class="section-desc" data-bind="description"></p>
       </div>
+      <div class="card" id="edu-list"></div>
     </section>
 
-    <!-- Education -->
-    <section class="block" id="education">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" data-bind="title">Education</h2>
-          <p class="section-desc" data-bind="description"></p>
-        </div>
-        <div class="card" id="edu-list"></div>
+    <section class="block view" id="skills" data-view hidden>
+      <a class="back" href="#home">Back to home</a>
+      <div class="section-head">
+        <h2 class="section-title" data-bind="title" tabindex="-1">Technical Skills</h2>
+        <p class="section-desc" data-bind="description"></p>
       </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="block" id="skills">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" data-bind="title">Technical Skills</h2>
-          <p class="section-desc" data-bind="description"></p>
-        </div>
-        <div class="skill-grid" id="skill-list"></div>
-      </div>
-    </section>
-
-    <!-- References -->
-    <section class="block" id="contact">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title" data-bind="title">References</h2>
-          <p class="section-desc" data-bind="description"></p>
-        </div>
-        <div class="ref-grid" id="ref-list"></div>
-      </div>
+      <div class="skill-grid" id="skill-list"></div>
     </section>
 
   </main>
 </div>
 
+<dialog id="detail" class="detail" aria-labelledby="detail-title">
+  <button type="button" class="detail-close" data-close aria-label="Close details">&times;</button>
+  <div id="detail-body" class="detail-body"></div>
+</dialog>
+
 <footer class="site-footer container">
   <span>&copy; <span id="year"></span> Farhan Ahmed Onu</span>
-  <span>Static site — data lives in <code>/data</code> as JSON.</span>
+  <a href="#top">Back to top &uarr;</a>
 </footer>
 
 <noscript>
@@ -140,5 +118,6 @@
 
 <script type="module" src="js/theme.js"></script>
 <script type="module" src="js/main.js"></script>
+<script type="module" src="js/ui.js"></script>
 </body>
 </html>

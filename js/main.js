@@ -12,8 +12,7 @@ const DATA = {
   publications: 'data/publications.json',
   projects:   'data/projects.json',
   education:  'data/education.json',
-  skills:     'data/skills.json',
-  references: 'data/references.json'
+  skills:     'data/skills.json'
 };
 
 async function loadJSON(path) {

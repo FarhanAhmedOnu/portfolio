@@ -8,7 +8,7 @@ const button = document.getElementById('theme-toggle');
 
 function apply(theme) {
   root.setAttribute('data-theme', theme);
-  localStorage.setItem(KEY, theme);
+  try { localStorage.setItem(KEY, theme); } catch (e) {}
   if (button) button.setAttribute('aria-pressed', String(theme === 'dark'));
 }
 
